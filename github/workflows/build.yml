@@ -1,0 +1,14 @@
+on:
+repository_dispatch:
+types: [build_app] 
+
+jobs:
+build:
+runs-on: ubuntu-latest
+steps:
+- uses: actions/checkout@v4
+- name: Build APK
+run: |
+npx cap add android
+npx cap sync android --url ${{ github.event.client_payload.web_url }}
+cd android && ./gradlew assembleDebug
