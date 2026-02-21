@@ -22,9 +22,17 @@ jobs:
 
       - name: Build APK
         run: |
+          # 1. Start fresh
           rm -rf android
+          
+          # 2. Add the platform
           npx cap add android
-          npx cap sync android --url ${{ github.event.client_payload.web_url }}
+          
+          # 3. Point the app to your Make.com URL
+          npx cap copy android --web-dir .
+          sed -i 's|"server": {.*}|"server": {"url": "${{ github.event.client_payload.web_url }}", "cleartext": true}|' capacitor.config.json
+          
+          # 4. Final Compile
           cd android && chmod +x gradlew && ./gradlew assembleDebug
 
       - name: Upload APK
