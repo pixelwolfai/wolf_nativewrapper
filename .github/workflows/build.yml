@@ -30,6 +30,7 @@ jobs:
         run: |
           rm -rf android
           mkdir -p www
+          echo "<html><body>Loading...</body></html>" > www/index.html
           echo "{ \"appId\": \"com.app.wrapper\", \"appName\": \"App\", \"webDir\": \"www\", \"server\": { \"url\": \"${{ github.event.client_payload.web_url }}\", \"cleartext\": true } }" > capacitor.config.json
           npx cap add android
           npx cap sync android
